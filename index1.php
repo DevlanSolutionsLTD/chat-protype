@@ -112,7 +112,7 @@ include('header.php');
                     <div class="d-flex justify-content-between align-items-center">
                       <h6 class="mb-0">'.$user['username'].'</h6>
                       <div>
-                        <small class="text-muted">Online</small>
+                        <small class="text-muted">'.$status.'</small>
                       </div>
                     </div>
                         <span class="text-muted text-small col-11 p-0  d-block"><p class="name"><span id="unread_" class="unread"><span class="badge badge-info">'.$chat->getUnreadMessageCount($user['userid'], $_SESSION['userid']).'</span></p></span>
@@ -140,150 +140,30 @@ include('header.php');
                   <h6 class="mb-0 d-block">
                     '.$user['username'].'
                   </h6>
-                  <span class="text-muted text-small">last seen today at 4:35pm</span>
+                  <span class="text-muted text-small">Online</span>
                 </div>
               </div>
-              <div class="dropdown">
-                <button type="button" class="btn btn-link d-none d-sm-inline-block">
-                  <i class="fas fa-paperclip"></i>
-                </button>
-                <button type="button" class="btn btn-link d-none d-sm-inline-block">
-                  <i class="fas fa-search"></i>
-                </button>
-                <button type="button" class="btn btn-link" data-toggle="dropdown">
-                  <i class="fas fa-ellipsis-v"></i>
-                </button>
-                <div class="dropdown-menu dropdown-menu-right">
-                  <a class="dropdown-item" href="#">Contact info</a>
-                  <a class="dropdown-item" href="#">Select messages</a>
-                  <a class="dropdown-item" href="#">Mute</a>
-                  <a class="dropdown-item" href="#">Clear messages</a>
-                  <a class="dropdown-item" href="#">Delete chat</a>
-                </div>
-              </div>
+              
             </div>';
                     } ?>
-            <div class="card-body card-body-scroll chat-window">
-              <div class="row justify-content-start my-2">
-                <div class="col-auto">
-                  <div class="card bg-light">
-                    <div class="card-body p-2">
-                      <p class="mb-0">
-                        Hey Sandy!
-                      </p>
-                      <div>
-                        <small>1:01pm</small>
-                      </div>
-                    </div>
-                  </div>
+          
+             
+              
+              <div class="col px-0">
+              <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="media align-items-center">
+                 
+             
+              <div class="card mb-4">
+                <div class="card-body align-items-center">
+                  
+                  <img class="img-fluid img-thumbnail" src="img/chat-background.jpg" alt="">
+                  
                 </div>
-              </div>
-              <div class="row justify-content-end text-right my-2">
-                <div class="col-auto">
-                  <div class="card bg-info text-white">
-                    <div class="card-body p-2">
-                      <p class="mb-0">
-                        Hey Daniel 🙂
-                      </p>
-                      <div>
-                        <i class="icon-check text-small"></i>
-                        <small>1:04pm</small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row justify-content-start my-2">
-                <div class="col-auto">
-                  <div class="card bg-light">
-                    <div class="card-body p-2">
-                      <p class="mb-0">
-                        I guess I like this one in black more than the other one in grey.
-                      </p>
-                      <div>
-                        <small>1:07pm</small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row justify-content-end text-right my-2">
-                <div class="col-auto">
-                  <div class="card bg-info text-white">
-                    <div class="card-body p-2">
-                      <p class="mb-0">
-                        Great! If I place an order now, you’ll get it by tomorrow morning.
-                      </p>
-                      <div>
-                        <i class="icon-check text-small"></i>
-                        <small>1:09pm</small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row justify-content-start my-2">
-                <div class="col-auto">
-                  <div class="card bg-light">
-                    <div class="card-body p-2">
-                      <p class="mb-0">
-                        Sure, I’d like that.
-                      </p>
-                      <div>
-                        <small>1:12pm</small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row justify-content-end text-right my-2">
-                <div class="col-auto">
-                  <div class="card bg-info text-white">
-                    <div class="card-body p-2">
-                      <p class="mb-0">
-                        We need an advance payment guarantee of 20%. You’ll<br />pay the remaining 80% when you get the product.
-                      </p>
-                      <div>
-                        <i class="icon-check text-small"></i>
-                        <small>1:12pm</small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row justify-content-start my-2">
-                <div class="col-auto">
-                  <div class="card bg-light">
-                    <div class="card-body p-2">
-                      <p class="mb-0">
-                        That sounds great, thank you! 😄
-                      </p>
-                      <div>
-                        <small>1:14pm</small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            </div>
               </div>
             </div>
-            <div class="card-footer bg-light">
-              <form class="d-flex align-items-center">
-                <div class="input-group">
-                  <div class="input-group-prepend">
-                    <button class="btn btn-secondary" type="button">
-                      <i class="fas fa-paperclip"></i>
-                    </button>
-                  </div>
-                  <input class="form-control" type="text" placeholder="Type a message" name="message" />
-                  <div class="input-group-append">
-                    <button class="btn btn-secondary" type="button">
-                      <i class="fas fa-microphone"></i>
-                    </button>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
+           </div>
         </div>
       </div>
 
