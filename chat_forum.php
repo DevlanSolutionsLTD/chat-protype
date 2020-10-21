@@ -5,14 +5,15 @@ include('header.php');
 <!DOCTYPE html>
 <html lang="en">
 
-<meta http-equiv="content-type" content="text/html;charset=utf-8" />
+<!-- Mirrored from robust.bootlab.io/demo-chat.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 05 Aug 2019 16:50:12 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Chat prototype </title>
+  <title>Robust UI Kit</title>
 
   <link href="dist/css/robust.css" rel="stylesheet">
 </head>
@@ -20,7 +21,7 @@ include('header.php');
 
   <nav class="navbar navbar-lg navbar-expand-lg navbar-dark bg-info">
     <div class="container">
-      <a class="navbar-brand" href="index-2.html">WCF</a>
+      <a class="navbar-brand" href="index-2.html">Robust.</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -78,10 +79,10 @@ include('header.php');
       </div>
     </div>
   </nav>
-
+  <?php if(isset($_SESSION['userid']) && $_SESSION['userid']) { ?> 
   <main class="main" role="main">
     <div class="py-5 bg-light">
-    <?php if(isset($_SESSION['userid']) && $_SESSION['userid']) { ?> 
+
       <div class="container">
         <div class="row card flex-row">
           <div class="col-auto px-0">
@@ -105,7 +106,7 @@ include('header.php');
 						if($user['userid'] == $currentSession) {
 							$activeUser = "active";
 						}
-              echo'<a href='.'chat_forum.php?chat='.$user['userid'].' class="list-group-item">
+              echo'<a href="'.$user['userid'].'" class="list-group-item">
                 <div class="media">
                   <img alt="Image" src="userpics/'.$user['avatar'].'" class="img-fluid rounded-circle m-0" width="48" height="48" />
                   <div class="media-body d-none d-lg-block ml-2">
@@ -125,51 +126,171 @@ include('header.php');
               </a>';
                     }
               ?>
-            </div>
+              </div>
           </div>
+
+          <div class="col px-0">
           <?php
-          $loggedUser = $chat->getUserDetails($_SESSION['userid']);
-          $currentSession = '';
-					foreach ($loggedUser as $user) {
-						$currentSession = $user['current_session'];
-  echo'        <div class="col px-0">
-            <div class="card-header d-flex justify-content-between align-items-center">
+              $chat_id = $_GET['chat'];
+					$userDetails = $chat->getUserDetails($chat_id);
+					foreach ($userDetails as $user) {	
+          echo'<div class="card-header d-flex justify-content-between align-items-center">
               <div class="media align-items-center">
                 <img alt="Image" src="userpics/'.$user['avatar'].'" class="img-fluid rounded-circle m-0" width="46" height="46" />
                 <div class="media-body ml-2">
                   <h6 class="mb-0 d-block">
-                    '.$user['username'].'
+                  '.$user['username'].'
                   </h6>
-                  <span class="text-muted text-small">Online</span>
+                  <span class="text-muted text-small">'.$status.'</span>
                 </div>
               </div>
-              
+              <div class="dropdown">
+                <button type="button" class="btn btn-link d-none d-sm-inline-block">
+                  <i class="fas fa-paperclip"></i>
+                </button>
+                <button type="button" class="btn btn-link d-none d-sm-inline-block">
+                  <i class="fas fa-search"></i>
+                </button>
+                <button type="button" class="btn btn-link" data-toggle="dropdown">
+                  <i class="fas fa-ellipsis-v"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right">
+                  <a class="dropdown-item" href="#">Contact info</a>
+                  <a class="dropdown-item" href="#">Select messages</a>
+                  <a class="dropdown-item" href="#">Mute</a>
+                  <a class="dropdown-item" href="#">Clear messages</a>
+                  <a class="dropdown-item" href="#">Delete chat</a>
+                </div>
+              </div>
             </div>';
-                    } ?>
-          
-             
-              
-              <div class="col px-0">
-              <div class="card-header d-flex justify-content-between align-items-center">
-                <div class="media align-items-center">
-                 
-             
-              <div class="card mb-4">
-                <div class="card-body align-items-center">
-                  
-                  <img class="img-fluid img-thumbnail" src="img/chat-background.jpg" alt="">
-                  
+             } ?>
+            <div class="card-body card-body-scroll chat-window">
+              <div class="row justify-content-start my-2">
+                <div class="col-auto">
+                  <div class="card bg-light">
+                    <div class="card-body p-2">
+                      <p class="mb-0">
+                        Hey Sandy!
+                      </p>
+                      <div>
+                        <small>1:01pm</small>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-            </div>
+              </div>
+              <div class="row justify-content-end text-right my-2">
+                <div class="col-auto">
+                  <div class="card bg-info text-white">
+                    <div class="card-body p-2">
+                      <p class="mb-0">
+                        Hey Daniel 🙂
+                      </p>
+                      <div>
+                        <i class="icon-check text-small"></i>
+                        <small>1:04pm</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row justify-content-start my-2">
+                <div class="col-auto">
+                  <div class="card bg-light">
+                    <div class="card-body p-2">
+                      <p class="mb-0">
+                        I guess I like this one in black more than the other one in grey.
+                      </p>
+                      <div>
+                        <small>1:07pm</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row justify-content-end text-right my-2">
+                <div class="col-auto">
+                  <div class="card bg-info text-white">
+                    <div class="card-body p-2">
+                      <p class="mb-0">
+                        Great! If I place an order now, you’ll get it by tomorrow morning.
+                      </p>
+                      <div>
+                        <i class="icon-check text-small"></i>
+                        <small>1:09pm</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row justify-content-start my-2">
+                <div class="col-auto">
+                  <div class="card bg-light">
+                    <div class="card-body p-2">
+                      <p class="mb-0">
+                        Sure, I’d like that.
+                      </p>
+                      <div>
+                        <small>1:12pm</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row justify-content-end text-right my-2">
+                <div class="col-auto">
+                  <div class="card bg-info text-white">
+                    <div class="card-body p-2">
+                      <p class="mb-0">
+                        We need an advance payment guarantee of 20%. You’ll<br />pay the remaining 80% when you get the product.
+                      </p>
+                      <div>
+                        <i class="icon-check text-small"></i>
+                        <small>1:12pm</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row justify-content-start my-2">
+                <div class="col-auto">
+                  <div class="card bg-light">
+                    <div class="card-body p-2">
+                      <p class="mb-0">
+                        That sounds great, thank you! 😄
+                      </p>
+                      <div>
+                        <small>1:14pm</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-           </div>
+            <div class="card-footer bg-light">
+              <form class="d-flex align-items-center">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <button class="btn btn-secondary" type="button">
+                      <i class="fas fa-paperclip"></i>
+                    </button>
+                  </div>
+                  <input class="form-control" type="text" placeholder="Type a message" name="message" />
+                  <div class="input-group-append">
+                    <button class="btn btn-secondary" type="button">
+                      <i class="fas fa-microphone"></i>
+                    </button>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
 
     </div>
   </main>
-
+                <?php } ?>
   <footer role="contentinfo" class="py-6 lh-1 bg-white">
     <div class="container">
       <div class="row">
@@ -244,4 +365,3 @@ include('header.php');
 
 <!-- Mirrored from robust.bootlab.io/demo-chat.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 05 Aug 2019 16:50:12 GMT -->
 </html>
-    <?php } ?>
