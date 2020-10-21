@@ -105,7 +105,8 @@ include('header.php');
 						if($user['userid'] == $currentSession) {
 							$activeUser = "active";
 						}
-              echo'<a href='.'chat_forum.php?chat='.$user['userid'].' class="list-group-item">
+              echo'<li id="'.$user['userid'].'" class="contact '.$activeUser.'" data-touserid="'.$user['userid'].'" data-tousername="'.$user['username'].'">
+              <a href='.'chat_forum.php?chat='.$user['userid'].' class="list-group-item" data-touserid="'.$user['userid'].'" data-tousername="'.$user['username'].'" >
                 <div class="media">
                   <img alt="Image" src="userpics/'.$user['avatar'].'" class="img-fluid rounded-circle m-0" width="48" height="48" />
                   <div class="media-body d-none d-lg-block ml-2">
@@ -122,7 +123,8 @@ include('header.php');
                    
                   </div>
                 </div>
-              </a>';
+              </a>
+              </li>';
                     }
               ?>
             </div>
