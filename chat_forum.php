@@ -13,7 +13,7 @@ include('header.php');
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Robust UI Kit</title>
+  <title>WCF</title>
 
   <link href="dist/css/robust.css" rel="stylesheet">
 </head>
@@ -21,7 +21,7 @@ include('header.php');
 
   <nav class="navbar navbar-lg navbar-expand-lg navbar-dark bg-info">
     <div class="container">
-      <a class="navbar-brand" href="index-2.html">Robust.</a>
+      <a class="navbar-brand" href="index-2.html">WCF</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -106,7 +106,7 @@ include('header.php');
 						if($user['userid'] == $currentSession) {
 							$activeUser = "active";
 						}
-              echo'<a href="'.$user['userid'].'" class="list-group-item">
+              echo'<a href='.'chat_forum.php?chat='.$user['userid'].' class="list-group-item">
                 <div class="media">
                   <img alt="Image" src="userpics/'.$user['avatar'].'" class="img-fluid rounded-circle m-0" width="48" height="48" />
                   <div class="media-body d-none d-lg-block ml-2">
@@ -165,107 +165,9 @@ include('header.php');
             </div>';
              } ?>
             <div class="card-body card-body-scroll chat-window">
-              <div class="row justify-content-start my-2">
-                <div class="col-auto">
-                  <div class="card bg-light">
-                    <div class="card-body p-2">
-                      <p class="mb-0">
-                        Hey Sandy!
-                      </p>
-                      <div>
-                        <small>1:01pm</small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row justify-content-end text-right my-2">
-                <div class="col-auto">
-                  <div class="card bg-info text-white">
-                    <div class="card-body p-2">
-                      <p class="mb-0">
-                        Hey Daniel 🙂
-                      </p>
-                      <div>
-                        <i class="icon-check text-small"></i>
-                        <small>1:04pm</small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row justify-content-start my-2">
-                <div class="col-auto">
-                  <div class="card bg-light">
-                    <div class="card-body p-2">
-                      <p class="mb-0">
-                        I guess I like this one in black more than the other one in grey.
-                      </p>
-                      <div>
-                        <small>1:07pm</small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row justify-content-end text-right my-2">
-                <div class="col-auto">
-                  <div class="card bg-info text-white">
-                    <div class="card-body p-2">
-                      <p class="mb-0">
-                        Great! If I place an order now, you’ll get it by tomorrow morning.
-                      </p>
-                      <div>
-                        <i class="icon-check text-small"></i>
-                        <small>1:09pm</small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row justify-content-start my-2">
-                <div class="col-auto">
-                  <div class="card bg-light">
-                    <div class="card-body p-2">
-                      <p class="mb-0">
-                        Sure, I’d like that.
-                      </p>
-                      <div>
-                        <small>1:12pm</small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row justify-content-end text-right my-2">
-                <div class="col-auto">
-                  <div class="card bg-info text-white">
-                    <div class="card-body p-2">
-                      <p class="mb-0">
-                        We need an advance payment guarantee of 20%. You’ll<br />pay the remaining 80% when you get the product.
-                      </p>
-                      <div>
-                        <i class="icon-check text-small"></i>
-                        <small>1:12pm</small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row justify-content-start my-2">
-                <div class="col-auto">
-                  <div class="card bg-light">
-                    <div class="card-body p-2">
-                      <p class="mb-0">
-                        That sounds great, thank you! 😄
-                      </p>
-                      <div>
-                        <small>1:14pm</small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <?php
+					echo $chat->getUserChat($_SESSION['userid'], $chat_id);						
+					?>
             </div>
             <div class="card-footer bg-light">
               <form class="d-flex align-items-center">

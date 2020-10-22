@@ -106,16 +106,42 @@ class Chat{
 		foreach($userChat as $chat){
 			$user_name = '';
 			if($chat["sender_userid"] == $from_user_id) {
-				$conversation .= '<li class="sent">';
-				$conversation .= '<img width="22px" height="22px" src="userpics/'.$fromUserAvatar.'" alt="" />';
+				$conversation .= '<div class="row justify-content-end text-right my-2">
+                <div class="col-auto">
+                  <div class="card bg-info text-white">
+                    <div class="card-body p-2">
+                      <p class="mb-0">
+					  '.$chat["message"].'
+                      </p>
+                      <div>
+                        <i class="icon-check text-small"></i>
+                        <small>1:04pm</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>';
+				
 			} else {
-				$conversation .= '<li class="replies">';
-				$conversation .= '<img width="22px" height="22px" src="userpics/'.$toUserAvatar.'" alt="" />';
+				$conversation .= '<div class="row justify-content-start my-2">
+                <div class="col-auto">
+                  <div class="card bg-light">
+                    <div class="card-body p-2">
+                      <p class="mb-0">
+					  '.$chat["message"].'
+                      </p>
+                      <div>
+                        <small>1:07pm</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>';
+				
 			}			
-			$conversation .= '<p>'.$chat["message"].'</p>';			
-			$conversation .= '</li>';
+			
 		}		
-		$conversation .= '</ul>';
+	
 		return $conversation;
 	}
 	public function showUserChat($from_user_id, $to_user_id) {		
