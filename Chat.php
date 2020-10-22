@@ -102,7 +102,7 @@ class Chat{
 			AND reciever_userid = '".$from_user_id."') 
 			ORDER BY timestamp ASC";
 		$userChat = $this->getData($sqlQuery);	
-		$conversation = '<ul>';
+		$conversation = '<div class="card-body card-body-scroll chat-window">';
 		foreach($userChat as $chat){
 			$user_name = '';
 			if($chat["sender_userid"] == $from_user_id) {
@@ -115,12 +115,12 @@ class Chat{
                       </p>
                       <div>
                         <i class="icon-check text-small"></i>
-                        <small>1:04pm</small>
+                        <small>'.$chat["timestamp"].'</small>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>';
+			  </div>';
 				
 			} else {
 				$conversation .= '<div class="row justify-content-start my-2">
@@ -131,17 +131,17 @@ class Chat{
 					  '.$chat["message"].'
                       </p>
                       <div>
-                        <small>1:07pm</small>
+                        <small>'.$chat["timestamp"].'</small>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>';
-				
+			  </div>';
+			  '</div>';
 			}			
-			
+				
 		}		
-	
+		
 		return $conversation;
 	}
 	public function showUserChat($from_user_id, $to_user_id) {		

@@ -164,11 +164,11 @@ include('header.php');
               </div>
             </div>';
              } ?>
-            <div class="card-body card-body-scroll chat-window">
+            
             <?php
 					echo $chat->getUserChat($_SESSION['userid'], $chat_id);						
 					?>
-            </div>
+            
             <div class="card-footer bg-light">
               <form class="d-flex align-items-center">
                 <div class="input-group">
