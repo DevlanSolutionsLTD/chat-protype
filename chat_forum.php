@@ -2,6 +2,37 @@
 session_start();
 include('header.php');
 ?>
+<?php
+ $host  = 'localhost';
+ $user  = 'root';
+ $password   = "";
+$database  = "phpzag_demo";      
+ $chatTable = 'chat';
+ $chatUsersTable = 'chat_users';
+ $chatLoginDetailsTable = 'chat_login_details';
+  
+$conn = new mysqli($host, $user, $password, $database);
+if (isset($_POST['chat'])) {
+	$sender_userid = $_POST['sender_userid'];
+    $reciever_userid = $_POST['reciever_userid'];
+	$message = $_POST['message'];
+	$status = 1;
+
+    $stmt = $conn->prepare("INSERT INTO chat (reciever_userid, sender_userid, message, status) VALUES (?, ?, ?,?)");
+    $stmt->bind_param("ssss", $reciever_userid ,$sender_userid,$message,$status);
+    $stmt->execute();
+    if ($stmt == TRUE) {
+	    echo "<audio src = 'sound/134332-facebook-chat-sound.mp3' hidden = 'true' autoplay = 'true' /></audio>";
+      header("refresh: 4");
+      
+     
+   
+    } else {
+       echo"Message not sent";
+    }
+	
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -170,17 +201,15 @@ include('header.php');
 					?>
             
             <div class="card-footer bg-light">
-              <form class="d-flex align-items-center">
+      
+            <form method="POST"  class="d-flex align-items-center">
                 <div class="input-group">
-                  <div class="input-group-prepend">
-                    <button class="btn btn-secondary" type="button">
-                      <i class="fas fa-paperclip"></i>
-                    </button>
-                  </div>
+               <input class="form-control" type="hidden" value="<?php echo $_SESSION['userid']; ?>" name="sender_userid" />
+                <input class="form-control" type="hidden" value="<?php echo $chat_id; ?>" name="reciever_userid" />
                   <input class="form-control" type="text" placeholder="Type a message" name="message" />
                   <div class="input-group-append">
-                    <button class="btn btn-secondary" type="button">
-                      <i class="fas fa-microphone"></i>
+                    <button class="btn btn-secondary" name="chat" type="su">
+                      <i class="fa fa-paper-plane"></i>
                     </button>
                   </div>
                 </div>
@@ -263,6 +292,11 @@ include('header.php');
     const chatWindow = $('.chat-window')
     chatWindow.scrollTop(chatWindow.prop('scrollHeight'));
   </script>
+   <script>
+if ( window.history.replaceState ) {
+  window.history.replaceState( null, null, window.location);
+}
+</script>
 </body>
 
 <!-- Mirrored from robust.bootlab.io/demo-chat.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 05 Aug 2019 16:50:12 GMT -->
