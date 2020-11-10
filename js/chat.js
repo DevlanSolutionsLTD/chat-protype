@@ -50,7 +50,7 @@ $(document).ready(function(){
 		to_user_id = to_user_id.replace(/chatButton/g, "");
 		sendMessage(to_user_id);
 	});
-	$(document).on('focus', '.message-input', function(){
+	$(document).on('focus', 'form-control', function(){
 		var is_type = 'yes';
 		$.ajax({
 			url:"chat_action.php",
@@ -60,7 +60,7 @@ $(document).ready(function(){
 			}
 		});
 	}); 
-	$(document).on('blur', '.message-input', function(){
+	$(document).on('blur', '.form-control', function(){
 		var is_type = 'no';
 		$.ajax({
 			url:"chat_action.php",

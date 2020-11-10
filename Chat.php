@@ -3,16 +3,16 @@ class Chat{
     private $host  = 'localhost';
     private $user  = 'root';
     private $password   = "";
-    private $database  = "phpzag_demo";      
+    private $database  ='WCF';      
     private $chatTable = 'chat';
-	private $chatUsersTable = 'chat_users';
-	private $chatLoginDetailsTable = 'chat_login_details';
+	private $chatUsersTable = 'user';
+	//private $chatLoginDetailsTable = 'chat_login_details';
 	private $dbConnect = false;
     public function __construct(){
         if(!$this->dbConnect){ 
             $conn = new mysqli($this->host, $this->user, $this->password, $this->database);
             if($conn->connect_error){
-                die("Error failed to connect to MySQL: " . $conn->connect_error);
+                die("Error failed to connect to MySQLI: " . $conn->connect_error);
             }else{
                 $this->dbConnect = $conn;
             }
@@ -20,9 +20,7 @@ class Chat{
     }
 	private function getData($sqlQuery) {
 		$result = mysqli_query($this->dbConnect, $sqlQuery);
-		if(!$result){
-			die('Error in query: '. mysqli_error());
-		}
+		
 		$data= array();
 		while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 			$data[]=$row;            
@@ -31,36 +29,27 @@ class Chat{
 	}
 	private function getNumRows($sqlQuery) {
 		$result = mysqli_query($this->dbConnect, $sqlQuery);
-		if(!$result){
-			die('Error in query: '. mysqli_error());
-		}
+		
 		$numRows = mysqli_num_rows($result);
 		return $numRows;
-	}
-	public function loginUsers($username, $password){
-		$sqlQuery = "
-			SELECT userid, username 
-			FROM ".$this->chatUsersTable." 
-			WHERE username='".$username."' AND password='".$password."'";		
-        return  $this->getData($sqlQuery);
-	}		
-	public function chatUsers($userid){
+	}	
+ public function chatUsers($user_id){
 		$sqlQuery = "
 			SELECT * FROM ".$this->chatUsersTable." 
-			WHERE userid != '$userid'";
+			WHERE user_id != '$user_id'";
 		return  $this->getData($sqlQuery);
 	}
-	public function getUserDetails($userid){
+	public function getUserDetails($user_id){
 		$sqlQuery = "
 			SELECT * FROM ".$this->chatUsersTable." 
-			WHERE userid = '$userid'";
+			WHERE user_id = '$user_id'";
 		return  $this->getData($sqlQuery);
 	}
-	public function getUserAvatar($userid){
+	public function getUserAvatar($user_id){
 		$sqlQuery = "
-			SELECT avatar 
+			SELECT user_image 
 			FROM ".$this->chatUsersTable." 
-			WHERE userid = '$userid'";
+			WHERE userid = '$user_id'";
 		$userResult = $this->getData($sqlQuery);
 		$userAvatar = '';
 		foreach ($userResult as $user) {
@@ -68,11 +57,11 @@ class Chat{
 		}	
 		return $userAvatar;
 	}	
-	public function updateUserOnline($userId, $online) {		
+	public function updateUserOnline($user_id, $online) {		
 		$sqlUserUpdate = "
 			UPDATE ".$this->chatUsersTable." 
 			SET online = '".$online."' 
-			WHERE userid = '".$userId."'";			
+			WHERE user_id = '".$user_id."'";			
 		mysqli_query($this->dbConnect, $sqlUserUpdate);		
 	}
 	public function insertChat($reciever_userid, $user_id, $chat_message) {		
@@ -82,7 +71,7 @@ class Chat{
 			VALUES ('".$reciever_userid."', '".$user_id."', '".$chat_message."', '1')";
 		$result = mysqli_query($this->dbConnect, $sqlInsert);
 		if(!$result){
-			return ('Error in query: '. mysqli_error());
+			return ('Error in query: '. mysqli_error($result));
 		} else {
 			$conversation = $this->getUserChat($user_id, $reciever_userid);
 			$data = array(

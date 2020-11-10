@@ -3,23 +3,21 @@ session_start();
 include('header.php');
 ?>
 <?php
- $host  = 'localhost';
- $user  = 'root';
- $password   = "";
-$database  = "phpzag_demo";      
- $chatTable = 'chat';
- $chatUsersTable = 'chat_users';
- $chatLoginDetailsTable = 'chat_login_details';
+     $host  = 'localhost';
+     $user  = 'root';
+     $password   = "";
+     $database  ='WCF';      
+     
   
 $conn = new mysqli($host, $user, $password, $database);
 if (isset($_POST['chat'])) {
 	$sender_userid = $_POST['sender_userid'];
-    $reciever_userid = $_POST['reciever_userid'];
+  $reciever_userid = $_POST['reciever_userid'];
 	$message = $_POST['message'];
 	$status = 1;
 
-    $stmt = $conn->prepare("INSERT INTO chat (reciever_userid, sender_userid, message, status) VALUES (?, ?, ?,?)");
-    $stmt->bind_param("ssss", $reciever_userid ,$sender_userid,$message,$status);
+    $stmt = $conn->prepare("INSERT INTO chat (chat_receiver,chat_sender,chat_content,chat_status) VALUES (?, ?, ?,?)");
+    $stmt->bind_param("sssi", $reciever_userid ,$sender_userid,$message,$status);
     $stmt->execute();
     if ($stmt == TRUE) {
 	    echo "<audio src = 'sound/134332-facebook-chat-sound.mp3' hidden = 'true' autoplay = 'true' /></audio>";
@@ -110,7 +108,7 @@ if (isset($_POST['chat'])) {
       </div>
     </div>
   </nav>
-  <?php if(isset($_SESSION['userid']) && $_SESSION['userid']) { ?> 
+  <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id']) { ?> 
   <main class="main" role="main">
     <div class="py-5 bg-light">
 
@@ -126,37 +124,34 @@ if (isset($_POST['chat'])) {
             $chat = new Chat();
             
 					echo '<ul>';
-					$chatUsers = $chat->chatUsers($_SESSION['userid']);
+					$chatUsers = $chat->chatUsers($_SESSION['user_id']);
 					foreach ($chatUsers as $user) {
-                        $currentSession = $user['current_session'];
-						$status = 'offline';						
-						if($user['online']) {
-							$status = 'online';
-						}
-						$activeUser = '';
-						if($user['userid'] == $currentSession) {
-							$activeUser = "active";
-						}
-              echo'<a href='.'chat_forum.php?chat='.$user['userid'].' class="list-group-item">
-                <div class="media">
-                  <img alt="Image" src="userpics/'.$user['avatar'].'" class="img-fluid rounded-circle m-0" width="48" height="48" />
-                  <div class="media-body d-none d-lg-block ml-2">
-                    <div class="d-flex justify-content-between align-items-center">
-                      <h6 class="mb-0">'.$user['username'].'</h6>
-                      <div>
-                        <small class="text-muted">'.$status.'</small>
-                      </div>
+
+         //   $currentSession = $user['current_session'];
+						$user_status = 'active';						
+						if($user['user_status']) {
+            echo'<li id="'.$user['user_id'].'">
+            <a href='.'chat_forum.php?chat='.$user['user_id'].' class="list-group-item" >
+              <div class="media">
+                <img alt="Image" src="img/'.$user['user_image'].'" class="img-fluid rounded-circle m-0" width="48" height="48" />
+                <div class="media-body d-none d-lg-block ml-2">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <h6 class="mb-0">'.$user['user_fname'].''.$user['user_mname'].' '.$user['user_lname'].'</h6>
+                    <div>
+                      <small class="text-muted">online</small>
                     </div>
-                        <span class="text-muted text-small col-11 p-0  d-block"><p class="name"><span id="unread_" class="unread"><span class="badge badge-info">'.$chat->getUnreadMessageCount($user['userid'], $_SESSION['userid']).'</span></p></span>
-                    
-                        <p class="preview"><span id="isTyping_'.$user['userid'].'" class="isTyping"></span></p> 
-                    
-                   
                   </div>
+                      <span class="text-muted text-small col-11 p-0  d-block"><p class="name"><span id="unread_" class="unread"><span class="badge badge-info"><span id="unread_'.$user['user_id'].'" class="unread">'.$chat->getUnreadMessageCount($user['user_id'], $_SESSION['user_id']).'</span></span></p></span>
+                  
+                      <p class="preview"><span id="isTyping_'.$user['user_id'].'" class="isTyping"></span></p> 
+                  
+                 
                 </div>
-              </a>';
-                    }
-              ?>
+              </div>
+            </a>
+            </li>';
+                  
+            } } ?>
               </div>
           </div>
 
@@ -167,12 +162,12 @@ if (isset($_POST['chat'])) {
 					foreach ($userDetails as $user) {	
           echo'<div class="card-header d-flex justify-content-between align-items-center">
               <div class="media align-items-center">
-                <img alt="Image" src="userpics/'.$user['avatar'].'" class="img-fluid rounded-circle m-0" width="46" height="46" />
+                <img alt="Image" src="img/'.$user['user_image'].'" class="img-fluid rounded-circle m-0" width="46" height="46" />
                 <div class="media-body ml-2">
                   <h6 class="mb-0 d-block">
-                  '.$user['username'].'
+                  '.$user['user_fname'].'  '.$user['user_mname'].'  '.$user['user_lname'].'
                   </h6>
-                  <span class="text-muted text-small">'.$status.'</span>
+                  <span class="text-muted text-small">Online</span>
                 </div>
               </div>
               <div class="dropdown">
@@ -195,20 +190,62 @@ if (isset($_POST['chat'])) {
               </div>
             </div>';
              } ?>
-            
-            <?php
-					echo $chat->getUserChat($_SESSION['userid'], $chat_id);						
-					?>
+             <?php
+             
+             
+                $ret = "SELECT * FROM  chat WHERE (chat_sender = ?  AND chat_receiver=?) OR (chat_receiver = ? AND  chat_sender=? ) ORDER BY chat_timestamp ASC";
+                $stmt = $conn->prepare($ret);
+                $stmt->bind_param('ssss', $_SESSION['user_id'], $chat_id, $_SESSION['user_id'], $chat_id);
+                $stmt->execute(); //ok
+                $res = $stmt->get_result();
+                while ($chat = $res->fetch_object()) {
+                  //get timestamp
+                  $time = date("D M Y g:i", strtotime($chat->chat_timestamp));
+
+                  if ($chat->chat_sender == $_SESSION['user_id']) {
+                   echo"<div class='row justify-content-end text-right my-2'>
+                   <div class='col-auto'>
+                     <div class='card bg-info text-white'>
+                       <div class='card-body p-2'>
+                         <p class='mb-0'>
+               '.$chat->chat_content.'
+                         </p>
+                         <div>
+                           <i class='icon-check text-small'></i>
+                           <small>'.$time.'</small>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+           </div>";
+                  } else {
+                 echo "
+                 <div class='row justify-content-start my-2'>
+                <div class='col-auto'>
+                  <div class='card bg-light'>
+                    <div class='card-body p-2'>
+                      <p class='mb-0'>
+                      $chat->chat_content
+                      </p>
+                      <div>
+                        <small>$time</small>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+			  </div>";  
+                  }}
+              ?>
             
             <div class="card-footer bg-light">
       
             <form method="POST"  class="d-flex align-items-center">
                 <div class="input-group">
-               <input class="form-control" type="hidden" value="<?php echo $_SESSION['userid']; ?>" name="sender_userid" />
+               <input class="form-control" type="hidden" value="<?php echo $_SESSION['user_id']; ?>" name="sender_userid" />
                 <input class="form-control" type="hidden" value="<?php echo $chat_id; ?>" name="reciever_userid" />
-                  <input class="form-control" type="text" placeholder="Type a message" name="message" />
+                  <input class="form-control"  type="text" placeholder="Type a message" name="message" />
                   <div class="input-group-append">
-                    <button class="btn btn-secondary" name="chat" type="su">
+                    <button class="btn btn-secondary" name="chat" type="submit">
                       <i class="fa fa-paper-plane"></i>
                     </button>
                   </div>
