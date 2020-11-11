@@ -12,7 +12,7 @@ $chat = new Chat();
      $database  ='WCF';      
      $conn = new mysqli($host, $user, $password, $database);
      $chat_id = $_GET['chat'];
-if (isset($_POST['chat'])) {
+if (isset($_POST['chat_msg'])) {
 	$sender_userid = $_POST['sender_userid'];
   $reciever_userid = $_POST['reciever_userid'];
 	$message = $_POST['message'];
@@ -126,7 +126,18 @@ if (isset($_POST['chat'])) {
 
           <div class="col px-0">
           <?php
-              $chat_id = $_GET['chat'];
+             // $chat_id = $_GET['chat'];
+              if (isset($_GET['chat'])) {
+                $chat_id = $_GET['chat'];
+                $user_id = $_SESSION['user_id'];
+                $chat_status ='0';
+               $query = "UPDATE chat  SET chat_status =? WHERE chat_sender = ? AND chat_receiver = ?";
+                    $stmt = $conn->prepare($query);
+                    $rc = $stmt->bind_param('iss',  $chat_status, $chat_id, $user_id);
+                    $stmt->execute();
+                    
+                }
+           
 					$userDetails = $chat->getUserDetails($chat_id);
 					foreach ($userDetails as $user) {	
           echo'<div class="card-header d-flex justify-content-between align-items-center">
@@ -214,7 +225,7 @@ if (isset($_POST['chat'])) {
                 <input class="form-control" type="hidden" value="<?php echo $chat_id; ?>" name="reciever_userid" />
                   <input class="form-control"  type="text" placeholder="Type a message" name="message" />
                   <div class="input-group-append">
-                    <button class="btn btn-secondary" name="chat" type="submit">
+                    <button class="btn btn-secondary" name="chat_msg" type="submit">
                       <i class="fa fa-paper-plane"></i>
                     </button>
                   </div>

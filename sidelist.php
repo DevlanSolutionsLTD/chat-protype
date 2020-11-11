@@ -10,13 +10,13 @@
             while ($row = $res->fetch_object()) {
                 $other_user=$row->user_id;
                 //count new messages
-            $ret = "SELECT COUNT(*) FROM  chat WHERE chat_sender = '$other_user' AND chat_receiver='$_SESSION[user_id]' AND  chat_status='1'";
+            $ret = "SELECT COUNT(*) FROM  chat WHERE chat_sender = '$other_user' AND chat_receiver='$user_id' AND  chat_status='1'";
             $stmt = $conn->prepare($ret);
             $stmt->execute();
             $stmt->bind_result($msgs);
             $stmt->fetch();
             $stmt->close();
-             if ($msgs==1) {
+             if ($msgs) {
                  $msgs='Your have'.$msgs.' unread messages';
                 }else{
                     $msgs='';
