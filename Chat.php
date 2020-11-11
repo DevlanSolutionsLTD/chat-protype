@@ -134,17 +134,7 @@ class Chat{
 		return $conversation;
 	}
 	
-	public function getUnreadMessageCount($senderUserid, $recieverUserid) {
-		$sqlQuery = "
-			SELECT * FROM ".$this->chatTable."  
-			WHERE sender_userid = '$senderUserid' AND reciever_userid = '$recieverUserid' AND status = '1'";
-		$numRows = $this->getNumRows($sqlQuery);
-		$output = '';
-		if($numRows > 0){
-			$output = $numRows;
-		}
-		return $output;
-	}	
+	
 	public function updateTypingStatus($is_type, $loginDetailsId) {		
 		$sqlUpdate = "
 			UPDATE ".$this->chatLoginDetailsTable." 
@@ -165,29 +155,7 @@ class Chat{
 		}
 		return $output;
 	}		
-	public function insertUserLoginDetails($userId) {		
-		$sqlInsert = "
-			INSERT INTO ".$this->chatLoginDetailsTable."(userid) 
-			VALUES ('".$userId."')";
-		mysqli_query($this->dbConnect, $sqlInsert);
-		$lastInsertId = mysqli_insert_id($this->dbConnect);
-        return $lastInsertId;		
+	
 	}	
-	public function updateLastActivity($loginDetailsId) {		
-		$sqlUpdate = "
-			UPDATE ".$this->chatLoginDetailsTable." 
-			SET last_activity = now() 
-			WHERE id = '".$loginDetailsId."'";
-		mysqli_query($this->dbConnect, $sqlUpdate);
-	}	
-	public function getUserLastActivity($userId) {
-		$sqlQuery = "
-			SELECT last_activity FROM ".$this->chatLoginDetailsTable." 
-			WHERE userid = '$userId' ORDER BY last_activity DESC LIMIT 1";
-		$result =  $this->getData($sqlQuery);
-		foreach($result as $row) {
-			return $row['last_activity'];
-		}
-	}	
-}
+
 ?>
