@@ -1,15 +1,17 @@
 <?php 
 session_start();
 include('header.php');
+include ('Chat.php');
+$chat = new Chat();
 ?>
+
 <?php
      $host  = 'localhost';
      $user  = 'root';
      $password   = "";
      $database  ='WCF';      
-     
-  
-$conn = new mysqli($host, $user, $password, $database);
+     $conn = new mysqli($host, $user, $password, $database);
+     $chat_id = $_GET['chat'];
 if (isset($_POST['chat'])) {
 	$sender_userid = $_POST['sender_userid'];
   $reciever_userid = $_POST['reciever_userid'];
@@ -119,41 +121,8 @@ if (isset($_POST['chat'])) {
               <input class="form-control my-1" type="search" placeholder="Search or start a new chat" />
             </form>
             <div class="list-group list-group-flush">
-            <?php
-            include ('Chat.php');
-            $chat = new Chat();
-            
-					echo '<ul>';
-					$chatUsers = $chat->chatUsers($_SESSION['user_id']);
-					foreach ($chatUsers as $user) {
-
-         //   $currentSession = $user['current_session'];
-						$user_status = 'active';						
-						if($user['user_status']) {
-            echo'<li id="'.$user['user_id'].'">
-            <a href='.'chat_forum.php?chat='.$user['user_id'].' class="list-group-item" >
-              <div class="media">
-                <img alt="Image" src="img/'.$user['user_image'].'" class="img-fluid rounded-circle m-0" width="48" height="48" />
-                <div class="media-body d-none d-lg-block ml-2">
-                  <div class="d-flex justify-content-between align-items-center">
-                    <h6 class="mb-0">'.$user['user_fname'].''.$user['user_mname'].' '.$user['user_lname'].'</h6>
-                    <div>
-                      <small class="text-muted">online</small>
-                    </div>
-                  </div>
-                      <span class="text-muted text-small col-11 p-0  d-block"><p class="name"><span id="unread_" class="unread"><span class="badge badge-info"><span id="unread_'.$user['user_id'].'" class="unread">'.$chat->getUnreadMessageCount($user['user_id'], $_SESSION['user_id']).'</span></span></p></span>
-                  
-                      <p class="preview"><span id="isTyping_'.$user['user_id'].'" class="isTyping"></span></p> 
-                  
-                 
-                </div>
-              </div>
-            </a>
-            </li>';
-                  
-            } } ?>
-              </div>
-          </div>
+            <?php include('sidelist.php'); ?>
+            </div>
 
           <div class="col px-0">
           <?php
@@ -208,11 +177,11 @@ if (isset($_POST['chat'])) {
                      <div class='card bg-info text-white'>
                        <div class='card-body p-2'>
                          <p class='mb-0'>
-               '.$chat->chat_content.'
+               $chat->chat_content
                          </p>
                          <div>
                            <i class='icon-check text-small'></i>
-                           <small>'.$time.'</small>
+                           <small>$time</small>
                          </div>
                        </div>
                      </div>
