@@ -151,24 +151,7 @@ if (isset($_POST['chat_msg'])) {
                   <span class="text-muted text-small">Online</span>
                 </div>
               </div>
-              <div class="dropdown">
-                <button type="button" class="btn btn-link d-none d-sm-inline-block">
-                  <i class="fas fa-paperclip"></i>
-                </button>
-                <button type="button" class="btn btn-link d-none d-sm-inline-block">
-                  <i class="fas fa-search"></i>
-                </button>
-                <button type="button" class="btn btn-link" data-toggle="dropdown">
-                  <i class="fas fa-ellipsis-v"></i>
-                </button>
-                <div class="dropdown-menu dropdown-menu-right">
-                  <a class="dropdown-item" href="#">Contact info</a>
-                  <a class="dropdown-item" href="#">Select messages</a>
-                  <a class="dropdown-item" href="#">Mute</a>
-                  <a class="dropdown-item" href="#">Clear messages</a>
-                  <a class="dropdown-item" href="#">Delete chat</a>
-                </div>
-              </div>
+              
             </div>
             
              <?php
