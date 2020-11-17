@@ -3,7 +3,7 @@
             include('config.php');
             //get all users
             $user_id =$_SESSION['user_id'];
-            $stmt = $conn->prepare("SELECT * FROM user WHERE user_id !=?");
+            $stmt = $conn->prepare("SELECT * FROM user WHERE user_id !=? ORDER BY `user_fname` ASC LIMIT 20");
             $stmt->bind_param('s', $user_id);
             $stmt->execute();
             $res = $stmt->get_result();
@@ -17,7 +17,7 @@
             $stmt->fetch();
             $stmt->close();
              if ($msgs) {
-                 $msgs='Your have'.$msgs.' unread messages';
+                 $msgs='Your have'.$msgs.' unread message';
                 }else{
                     $msgs='';
                 }
