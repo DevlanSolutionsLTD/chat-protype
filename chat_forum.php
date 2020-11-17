@@ -1,16 +1,11 @@
 <?php 
 session_start();
 include('header.php');
-include ('Chat.php');
-$chat = new Chat();
+
 ?>
 
 <?php
-     $host  = 'localhost';
-     $user  = 'root';
-     $password   = "";
-     $database  ='WCF';      
-     $conn = new mysqli($host, $user, $password, $database);
+    include('config.php');
      $chat_id = $_GET['chat'];
 if (isset($_POST['chat_msg'])) {
 	$sender_userid = $_POST['sender_userid'];
@@ -137,15 +132,21 @@ if (isset($_POST['chat_msg'])) {
                     $stmt->execute();
                     
                 }
-           
-					$userDetails = $chat->getUserDetails($chat_id);
-					foreach ($userDetails as $user) {	
-          echo'<div class="card-header d-flex justify-content-between align-items-center">
+                
+                $ret = "SELECT * FROM  user WHERE user_id = ? LIMIT 1";
+                $stmt = $conn->prepare($ret);
+                $stmt->bind_param('s', $chat_id);
+                $stmt->execute(); //ok
+                $res = $stmt->get_result();
+                while ($row = $res->fetch_object()) {
+                ?>
+				
+          <div class="card-header d-flex justify-content-between align-items-center">
               <div class="media align-items-center">
-                <img alt="Image" src="img/'.$user['user_image'].'" class="img-fluid rounded-circle m-0" width="46" height="46" />
+                <img alt="Image" src="img/<?php echo $row->user_image ?>" class="img-fluid rounded-circle m-0" width="46" height="46" />
                 <div class="media-body ml-2">
                   <h6 class="mb-0 d-block">
-                  '.$user['user_fname'].'  '.$user['user_mname'].'  '.$user['user_lname'].'
+                  <?php echo $row->user_fname ?> <?php echo $row->user_mname ?> <?php echo $row->user_lname ?>
                   </h6>
                   <span class="text-muted text-small">Online</span>
                 </div>
@@ -168,8 +169,8 @@ if (isset($_POST['chat_msg'])) {
                   <a class="dropdown-item" href="#">Delete chat</a>
                 </div>
               </div>
-            </div>';
-             } ?>
+            </div>
+            
              <?php
              
              
@@ -318,3 +319,4 @@ if ( window.history.replaceState ) {
 
 <!-- Mirrored from robust.bootlab.io/demo-chat.html by HTTrack Website Copier/3.x [XR&CO'2014], Mon, 05 Aug 2019 16:50:12 GMT -->
 </html>
+<?php } ?>

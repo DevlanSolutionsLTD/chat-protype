@@ -19,7 +19,7 @@ if (isset($_POST['user_login'])) {
 }
 ?>
 <title>WCF Chat protype</title>
-<?php include('container.php');?>
+
 <div class="container">		
 
 	<div class="row">
